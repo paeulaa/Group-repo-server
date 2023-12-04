@@ -49,22 +49,22 @@ appRouter.route("/login").post(async function (req, response) {
   }
 });
 
-// appRouter
-//     .route("/register")
-//     .post(async function (req, response) {
-//         let db_connect = dbo.getDb();
-//         let newUser = {
-//             firstName: req.body.firstName,
-//             lastName: req.body.lastName,
-//             email: req.body.email,
-//             confirmEmail: req.body.confirmEmail,
-//             password: req.body.password,
-//             confirmPassword: req.body.confirmPassword,
-//     };
-//  console.log(newUser);
-//  const results = await db_connect.collection("user_account").insertOne(newUser);
-//  response.json(results);
-// });
+appRouter.route("/register").post(async function (req, response) {
+  let db_connect = dbo.getDb();
+  let newUser = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    confirmEmail: req.body.confirmEmail,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+  };
+  console.log(newUser);
+  const results = await db_connect
+    .collection("user_account")
+    .insertOne(newUser);
+  response.json(results);
+});
 
 // appRouter
 //   .route("/login")
