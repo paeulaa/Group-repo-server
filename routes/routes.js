@@ -24,6 +24,31 @@ appRouter.route("/").get(function (req, res) {
   res.send("Home Page");
 });
 
+// This section will help you create a new user.
+appRouter.route("/login").post(async function (req, response) {
+  let db_connect = dbo.getDb();
+  let loginCredentials = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+  console.log(loginCredentials);
+
+  var email = { email: loginCredentials.email };
+  const results = await db_connect
+    .collection("user_account")
+    .find(email, { _id: 0, password: 1 })
+    .toArray();
+
+  console.log(results);
+
+  const db_password = results[0].password;
+  if (db_password == loginCredentials.password) {
+    response.send("logged in!");
+  } else {
+    response.send("email or/and password is incorrect!");
+  }
+});
+
 // appRouter
 //     .route("/register")
 //     .post(async function (req, response) {
