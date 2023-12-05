@@ -76,6 +76,7 @@ appRouter.route("/settings").put(async function (req, response) {
     password: req.body.password,
   };
 
+  console.log(userChange);
   // Check if an image file was uploaded
   if (req.file) {
     const imagePath = req.file.path; // This is the path to the saved image file
@@ -96,19 +97,19 @@ appRouter.route("/settings").put(async function (req, response) {
     });
 });
 
-// appRouter.route("/firstuserinfo").get(async (req, response) => {
-//   let db_connect = dbo.getDb(); // Use the existing database connection
+appRouter.route("/firstuserinfo").get(async (req, response) => {
+  let db_connect = dbo.getDb(); // Use the existing database connection
 
-//   try {
-//     const firstDocument = await db_connect
-//       .collection("user_account")
-//       .findOne({}); // Fetches the first document from 'user_account' collection
-//     console.log("Retrieved userId:", firstDocument._id);
-//     response.json(firstDocument);
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     response.status(500).send("Error fetching data");
-//   }
-// });
+  try {
+    const firstDocument = await db_connect
+      .collection("user_account")
+      .findOne({}); // Fetches the first document from 'user_account' collection
+    console.log("Retrieved userId:", firstDocument._id);
+    response.json(firstDocument);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    response.status(500).send("Error fetching data");
+  }
+});
 
 module.exports = appRouter;
