@@ -82,7 +82,7 @@ appRouter.route("/settings").put(async function (req, response) {
     userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
   }
 
-  // const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
+  const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
   db_connect
     .collection("user_account")
