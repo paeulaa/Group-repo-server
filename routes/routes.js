@@ -3,22 +3,22 @@ const express = require("express");
 // const bcrypt = require('bcrypt');
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
-const { Storage } = require("@google-cloud/storage");
-const MulterGoogleCloudStorage = require("multer-google-storage");
+// const { Storage } = require("@google-cloud/storage");
+const MulterGoogleCloudStorage = require("multer-cloud-storage");
 
-// Configure Google Cloud Storage
-const storage = new Storage({
-  projectId: "keen-vial-407222",
-  keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
-});
-
-const uploadHandler = multer({
+const upload = multer({
   storage: new MulterGoogleCloudStorage({
-    bucket: "bucket-quickstart_keen-vial-407222",
-    projectId: "keen-vial-407222",
-    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+    bucket: "YOUR_BUCKET_NAME", // Your Google Cloud Storage Bucket Name
+    projectId: "YOUR_PROJECT_ID", // Your Google Cloud Project ID
+    keyFilename: "PATH_TO_KEYFILE", // Path to Google Cloud Service Account JSON Keyfile
+    filename: (req, file, cb) => {
+      // Optional filename configuration
+      // Set custom filename, if needed
+      const filename = `${Date.now()}-${file.originalname}`;
+      cb(null, filename);
+    },
   }),
-  limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // Optional file size limit
 });
 
 // The router will be added as a middleware and will take control of requests starting with path /record.
