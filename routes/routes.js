@@ -3,23 +3,23 @@ const express = require("express");
 // const bcrypt = require('bcrypt');
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
-const { Storage } = require("@google-cloud/storage");
-const MulterGoogleCloudStorage = require("multer-google-storage");
+// const { Storage } = require("@google-cloud/storage");
+// const MulterGoogleCloudStorage = require("multer-google-storage");
 
-// Configure Google Cloud Storage
-const storage = new Storage({
-  projectId: "keen-vial-407222",
-  keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
-});
+// // Configure Google Cloud Storage
+// const storage = new Storage({
+//   projectId: "keen-vial-407222",
+//   keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+// });
 
-const uploadHandler = multer({
-  storage: new MulterGoogleCloudStorage({
-    bucket: "bucket-quickstart_keen-vial-407222",
-    projectId: "keen-vial-407222",
-    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
-  }),
-  limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
-});
+// const uploadHandler = multer({
+//   storage: new MulterGoogleCloudStorage({
+//     bucket: "bucket-quickstart_keen-vial-407222",
+//     projectId: "keen-vial-407222",
+//     keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+//   }),
+//   limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
+// });
 
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const appRouter = express.Router();
