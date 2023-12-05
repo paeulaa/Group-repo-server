@@ -76,11 +76,11 @@ appRouter.route("/settings").put(async function (req, response) {
     password: req.body.password,
   };
 
-  // // Check if an image file was uploaded
-  // if (req.file) {
-  //   const imagePath = req.file.path; // This is the path to the saved image file
-  //   userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
-  // }
+  // Check if an image file was uploaded
+  if (req.file) {
+    const imagePath = req.file.path; // This is the path to the saved image file
+    userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
+  }
 
   // const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
