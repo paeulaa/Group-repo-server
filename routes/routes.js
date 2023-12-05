@@ -4,7 +4,7 @@ const express = require("express");
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
 const { Storage } = require("@google-cloud/storage");
-// const MulterGoogleCloudStorage = require("multer-google-storage");
+const MulterGoogleCloudStorage = require("multer-google-storage");
 
 // // Configure Google Cloud Storage
 // const storage = new Storage({
