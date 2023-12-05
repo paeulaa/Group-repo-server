@@ -12,14 +12,14 @@ const storage = new Storage({
   keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
 });
 
-// const uploadHandler = multer({
-//   storage: new MulterGoogleCloudStorage({
-//     bucket: "bucket-quickstart_keen-vial-407222",
-//     projectId: "keen-vial-407222",
-//     keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
-//   }),
-//   limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
-// });
+const uploadHandler = multer({
+  storage: new MulterGoogleCloudStorage({
+    bucket: "bucket-quickstart_keen-vial-407222",
+    projectId: "keen-vial-407222",
+    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
+});
 
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const appRouter = express.Router();
