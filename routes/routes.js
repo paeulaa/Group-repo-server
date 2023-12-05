@@ -3,7 +3,7 @@ const express = require("express");
 // const bcrypt = require('bcrypt');
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
-// const { Storage } = require("@google-cloud/storage");
+const { Storage } = require("@google-cloud/storage");
 // const MulterGoogleCloudStorage = require("multer-google-storage");
 
 // // Configure Google Cloud Storage
