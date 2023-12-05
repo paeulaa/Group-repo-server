@@ -66,57 +66,9 @@ appRouter.route("/register").post(async function (req, response) {
   response.json(results);
 });
 
-// appRouter
-//   .route("/login")
-//   .post(async function (req, res) {
-//     let db_connect = dbo.getDb();
-//     try {
-//       if (!req.body.email || !req.body.password) {
-//         return res.status(400).send("Email and password is required");
-//       }
-
-//        let loginCredentials= {
-//         email: req.body.email,
-//         password: req.body.password,
-//       };
-
-//       var email = { email: loginCredentials.email };
-//       const user = await db_connect.collection("user_account").find(email,  { _id: 0, "password": 1 }).toArray();
-//       console.log(user);
-//       const db_password = user[0].password;
-//       if (db_password == loginCredentials.password) {
-//           res.send("logged in!");
-//       }
-//       else{
-//           res.send("email or/and password is incorrect!");
-//       }
-//       // console.log(user);
-
-//       // if (!user) {
-//       //   console.log("user not found");
-//       //   return res.status(401).json({ message: "Authentication failed" });
-//       // }
-
-//       // const validPassword = await bcrypt.compare(password, user.get("password"));
-
-//       // if (!validPassword) {
-//       //   console.log("Password is not valid");
-//       //   return res.status(401).json({ message: "Authentication failed" });
-//       // }
-
-//       // return res.status(200).json({ message: "Authorization granted!" });
-//     } catch (err) {
-//       console.log("Err: ", err);
-//       console.log("user not found");
-//       return res.status(401).json({ message: "Authentication failed" })
-//       // res.status(500).json({ error: err });
-//     }
-
-//  });
-
 appRouter
   .route("/settings")
-  .put(upload.single("image"), function (req, response) {
+  .put(upload.single("image"), async function (req, response) {
     let db_connect = dbo.getDb();
     let userId = req.body.userId;
     let userChange = {
@@ -134,16 +86,22 @@ appRouter
 
     const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
-    db_connect
+    await db_connect
       .collection("user_account")
-      .updateOne(userIdentifier, { $set: userChange }, function (err, res) {
-        if (err) {
-          response.status(500).send("Error updating user data: " + err.message);
-          return;
+      .updateOne(
+        userIdentifier,
+        { $set: userChange },
+        async function (err, res) {
+          if (err) {
+            response
+              .status(500)
+              .send("Error updating user data: " + err.message);
+            return;
+          }
+          console.log("Updated data");
+          response.json(res);
         }
-        console.log("Updated data");
-        response.json(res);
-      });
+      );
   });
 
 // appRouter.route("/firstuserinfo").get(async (req, response) => {
