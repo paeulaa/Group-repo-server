@@ -86,22 +86,21 @@ appRouter
 
     const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
-    await db_connect
-      .collection("user_account")
-      .updateOne(
-        userIdentifier,
-        { $set: userChange },
-        async function (err, res) {
-          if (err) {
-            response
-              .status(500)
-              .send("Error updating user data: " + err.message);
-            return;
-          }
-          console.log("Updated data");
-          response.json(res);
-        }
-      );
+    const profilechange = await db_connect.collection("user_account").updateOne(
+      userIdentifier,
+      { $set: userChange }
+      // async function (err, res) {
+      //   if (err) {
+      //     response
+      //       .status(500)
+      //       .send("Error updating user data: " + err.message);
+      //     return;
+      //   }
+      //   console.log("Updated data");
+      //   response.json(res);
+      // }
+    );
+    response.json(profilechange);
   });
 
 // appRouter.route("/firstuserinfo").get(async (req, response) => {
