@@ -6,11 +6,11 @@ const multer = require("multer");
 const { Storage } = require("@google-cloud/storage");
 const MulterGoogleCloudStorage = require("multer-google-storage");
 
-// // Configure Google Cloud Storage
-// const storage = new Storage({
-//   projectId: "keen-vial-407222",
-//   keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
-// });
+// Configure Google Cloud Storage
+const storage = new Storage({
+  projectId: "keen-vial-407222",
+  keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+});
 
 // const uploadHandler = multer({
 //   storage: new MulterGoogleCloudStorage({
