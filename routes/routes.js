@@ -3,8 +3,21 @@ const express = require("express");
 // const bcrypt = require('bcrypt');
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
-const upload = multer({
-  dest: "uploads/",
+const { Storage } = require("@google-cloud/storage");
+const MulterGoogleCloudStorage = require("multer-google-storage");
+
+// Configure Google Cloud Storage
+const storage = new Storage({
+  projectId: "keen-vial-407222",
+  keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+});
+
+const uploadHandler = multer({
+  storage: new MulterGoogleCloudStorage({
+    bucket: "bucket-quickstart_keen-vial-407222",
+    projectId: "keen-vial-407222",
+    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json",
+  }),
   limits: { fileSize: 50 * 1024 * 1024 }, // Limit of 50MB
 });
 
