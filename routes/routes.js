@@ -66,42 +66,40 @@ appRouter.route("/register").post(async function (req, response) {
   response.json(results);
 });
 
-appRouter
-  .route("/settings")
-  .put(upload.single("image"), async function (req, response) {
-    let db_connect = dbo.getDb();
-    let userId = req.body.userId;
-    let userChange = {
-      fname: req.body.fname,
-      lname: req.body.lname,
-      email: req.body.email,
-      password: req.body.password,
-    };
+appRouter.route("/settings").put(async function (req, response) {
+  let db_connect = dbo.getDb();
+  let userId = req.body.userId;
+  let userChange = {
+    fname: req.body.fname,
+    lname: req.body.lname,
+    email: req.body.email,
+    password: req.body.password,
+  };
 
-    // // Check if an image file was uploaded
-    // if (req.file) {
-    //   const imagePath = req.file.path; // This is the path to the saved image file
-    //   userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
-    // }
+  // // Check if an image file was uploaded
+  // if (req.file) {
+  //   const imagePath = req.file.path; // This is the path to the saved image file
+  //   userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
+  // }
 
-    // const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
+  // const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
-    // const profilechange = await db_connect.collection("user_account").updateOne(
-    //   userIdentifier,
-    //   { $set: userChange }
-    //   // async function (err, res) {
-    //   //   if (err) {
-    //   //     response
-    //   //       .status(500)
-    //   //       .send("Error updating user data: " + err.message);
-    //   //     return;
-    //   //   }
-    //   //   console.log("Updated data");
-    //   //   response.json(res);
-    //   // }
-    // );
-    // response.json(profilechange);
-  });
+  // const profilechange = await db_connect.collection("user_account").updateOne(
+  //   userIdentifier,
+  //   { $set: userChange }
+  //   // async function (err, res) {
+  //   //   if (err) {
+  //   //     response
+  //   //       .status(500)
+  //   //       .send("Error updating user data: " + err.message);
+  //   //     return;
+  //   //   }
+  //   //   console.log("Updated data");
+  //   //   response.json(res);
+  //   // }
+  // );
+  // response.json(profilechange);
+});
 
 // appRouter.route("/firstuserinfo").get(async (req, response) => {
 //   let db_connect = dbo.getDb(); // Use the existing database connection
