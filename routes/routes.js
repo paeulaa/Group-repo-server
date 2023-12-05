@@ -70,8 +70,8 @@ appRouter.route("/settings").put(async function (req, response) {
   let db_connect = dbo.getDb();
   let userId = req.body.userId;
   let userChange = {
-    firstName: req.body.fname,
-    lastName: req.body.lname,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     password: req.body.password,
   };
