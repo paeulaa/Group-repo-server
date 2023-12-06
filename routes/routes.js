@@ -143,10 +143,34 @@ appRouter.route("/settings").put(async function (req, response) {
   //     console.log("Updated data");
   //     response.json(res);
   //   });
-  const results = await db_connect
-    .collection("user_account")
-    .updateOne(userIdentifier, { $set: userChange });
-  response.json(results);
+
+  // const results = await db_connect
+  //   .collection("user_account")
+  //   .updateOne(userIdentifier, { $set: userChange });
+  // response.json(results);
+
+  try {
+    const results = await db_connect
+      .collection("user_account")
+      .updateOne(userIdentifier, { $set: userChange });
+
+    console.log("Matched count:", results.matchedCount);
+    console.log("Modified count:", results.modifiedCount);
+
+    if (results.matchedCount === 0) {
+      console.log("No matching document found for ID:", userId);
+      response.status(404).send("User not found.");
+    } else if (results.modifiedCount === 0) {
+      console.log("No changes were made to the document.");
+      response.status(200).send("No changes needed.");
+    } else {
+      console.log("User updated successfully.");
+      response.json(results);
+    }
+  } catch (err) {
+    console.error("Error updating user data:", err);
+    response.status(500).send("Error updating user data: " + err.message);
+  }
 });
 
 appRouter.route("/firstuserinfo").get(async (req, response) => {
