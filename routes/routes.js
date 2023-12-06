@@ -4,13 +4,13 @@ const express = require("express");
 // const { ObjectId } = require("mongodb");
 const multer = require("multer");
 // const { Storage } = require("@google-cloud/storage");
-const MulterGoogleCloudStorage = require("multer-cloud-storage");
+import MulterGoogleCloudStorage from "multer-cloud-storage";
 
 const upload = multer({
   storage: new MulterGoogleCloudStorage({
-    bucket: "YOUR_BUCKET_NAME", // Your Google Cloud Storage Bucket Name
-    projectId: "YOUR_PROJECT_ID", // Your Google Cloud Project ID
-    keyFilename: "PATH_TO_KEYFILE", // Path to Google Cloud Service Account JSON Keyfile
+    bucket: "bucket-quickstart_keen-vial-407222", // Your Google Cloud Storage Bucket Name
+    projectId: "keen-vial-407222", // Your Google Cloud Project ID
+    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json", // Path to Google Cloud Service Account JSON Keyfile
     filename: (req, file, cb) => {
       // Optional filename configuration
       // Set custom filename, if needed
