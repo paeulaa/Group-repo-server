@@ -128,7 +128,7 @@ appRouter.route("/settings").put(async function (req, response) {
     pronoun: req.body.pronoun,
   };
 
-  console.log(userChange);
+  // console.log(userChange);
   // Check if an image file was uploaded
   if (req.file) {
     const imagePath = req.file.path; // This is the path to the saved image file
