@@ -145,7 +145,7 @@ appRouter.route("/settings").put(async function (req, response) {
   //   });
   const results = await db_connect
     .collection("user_account")
-    .updateOne(userChange);
+    .updateOne(userIdentifier, { $set: userChange });
   response.json(results);
 });
 
