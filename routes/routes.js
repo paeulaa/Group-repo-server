@@ -114,7 +114,7 @@ appRouter
     }
   });
 
-appRouter.route("/settings").post(async function (req, response) {
+appRouter.route("/settings").put(async function (req, response) {
   let db_connect = dbo.getDb();
   let userId = req.body.userId;
   let userChange = {
