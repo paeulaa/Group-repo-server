@@ -116,6 +116,7 @@ appRouter
 
 appRouter.route("/settings").put(async function (req, response) {
   let db_connect = dbo.getDb();
+  console.log("Request body:", req.body);
   let userId = req.body.userId;
   let userChange = {
     firstName: req.body.firstName,
