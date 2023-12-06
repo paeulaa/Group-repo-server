@@ -122,7 +122,10 @@ appRouter.route("/settings").put(async function (req, response) {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    confirmEmail: req.body.confirmEmail,
     password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    pronoun: req.body.pronoun,
   };
 
   console.log(userChange);
