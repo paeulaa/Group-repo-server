@@ -116,7 +116,7 @@ appRouter
 
 appRouter
   .route("/settings")
-  .put(upload.single("image"), async function (req, response) {
+  .post(upload.single("image"), async function (req, response) {
     let db_connect = dbo.getDb();
     let userId = req.body.userId;
     let userChange = {
