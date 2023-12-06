@@ -1,5 +1,7 @@
 const express = require("express");
-// const { ObjectId } = require("mongodb");
+//const session = require("express-session");
+// const bcrypt = require('bcrypt');
+const { ObjectId } = require("mongodb");
 const multer = require("multer");
 // const { Storage } = require("@google-cloud/storage");
 import MulterGoogleCloudStorage from "multer-cloud-storage";
@@ -112,48 +114,64 @@ appRouter
     }
   });
 
-appRouter
-  .route("/settings")
-  .post(upload.single("image"), async function (req, response) {
-    let db_connect = dbo.getDb();
-    let userId = req.body.userId;
-    let userChange = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password,
-    };
+appRouter.route("/settings").put(async function (req, response) {
+  let db_connect = dbo.getDb();
+  let userId = req.body.userId;
+  let userChange = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
+  };
 
-    console.log(userChange);
-    // Check if an image file was uploaded
-    if (req.file) {
-      const imagePath = req.file.path; // This is the path to the saved image file
-      userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
-    }
+  console.log(userChange);
+  // Check if an image file was uploaded
+  if (req.file) {
+    const imagePath = req.file.path; // This is the path to the saved image file
+    userChange.imageUrl = imagePath; // Update the imageUrl field with the new image path
+  }
 
-    const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
+  const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
 
-    db_connect
+  // const res = await db_connect
+  //   .collection("user_account")
+  //   .updateOne(userIdentifier, { $set: userChange }, async function (err, res) {
+  //     if (err) {
+  //       response.status(500).send("Error updating user data: " + err.message);
+  //       return();
+  //     }
+  //     console.log("Updated data");
+  //     response.json(res);
+  //   });
+
+  // const results = await db_connect
+  //   .collection("user_account")
+  //   .updateOne(userIdentifier, { $set: userChange });
+  // response.json(results);
+
+  try {
+    const results = await db_connect
       .collection("user_account")
-      .updateOne(
-        userIdentifier,
-        { $set: userChange },
-        async function (err, res) {
-          if (err) {
-            response
-              .status(500)
-              .send("Error updating user data: " + err.message);
-            return;
-          }
-          console.log("Updated data");
-          response.json(res);
-        }
-      );
-    // const results = await db_connect
-    //   .collection("user_account")
-    //   .updateOne(userChange);
-    // response.json(results);
-  });
+      .updateOne(userIdentifier, { $set: userChange });
+
+    console.log("Matched count:", results.matchedCount);
+    console.log("Modified count:", results.modifiedCount);
+
+    if (results.matchedCount === 0) {
+      console.log("No matching document found for ID:", userId);
+      response.status(404).send("User not found.");
+    } else if (results.modifiedCount === 0) {
+      console.log("No changes were made to the document.");
+      response.status(200).send("No changes needed.");
+    } else {
+      console.log("User updated successfully.");
+      response.json(results);
+    }
+  } catch (err) {
+    console.error("Error updating user data:", err);
+    response.status(500).send("Error updating user data: " + err.message);
+  }
+});
 
 appRouter.route("/firstuserinfo").get(async (req, response) => {
   let db_connect = dbo.getDb(); // Use the existing database connection
