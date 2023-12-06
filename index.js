@@ -14,7 +14,7 @@ app.use(require("./routes/googleLogin"));
 //app.use(express.json({ limit: "50mb" }));
 //app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // get driver connection
-const dbo = require("./database/conn");
+//const dbo = require("./database/conn");
 
 app.listen(port, () => {
   // perform a database connection when server starts
