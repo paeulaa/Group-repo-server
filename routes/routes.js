@@ -4,22 +4,22 @@ const express = require("express");
 const { ObjectId } = require("mongodb");
 const multer = require("multer");
 // const { Storage } = require("@google-cloud/storage");
-import MulterGoogleCloudStorage from "multer-cloud-storage";
+// import MulterGoogleCloudStorage from "multer-cloud-storage";
 
-const upload = multer({
-  storage: new MulterGoogleCloudStorage({
-    bucket: "bucket-quickstart_keen-vial-407222", // Your Google Cloud Storage Bucket Name
-    projectId: "keen-vial-407222", // Your Google Cloud Project ID
-    keyFilename: "routes/keen-vial-407222-cb9490b288b9.json", // Path to Google Cloud Service Account JSON Keyfile
-    filename: (req, file, cb) => {
-      // Optional filename configuration
-      // Set custom filename, if needed
-      const filename = `${Date.now()}-${file.originalname}`;
-      cb(null, filename);
-    },
-  }),
-  limits: { fileSize: 50 * 1024 * 1024 }, // Optional file size limit
-});
+// const upload = multer({
+//   storage: new MulterGoogleCloudStorage({
+//     bucket: "bucket-quickstart_keen-vial-407222", // Your Google Cloud Storage Bucket Name
+//     projectId: "keen-vial-407222", // Your Google Cloud Project ID
+//     keyFilename: "routes/keen-vial-407222-cb9490b288b9.json", // Path to Google Cloud Service Account JSON Keyfile
+//     filename: (req, file, cb) => {
+//       // Optional filename configuration
+//       // Set custom filename, if needed
+//       const filename = `${Date.now()}-${file.originalname}`;
+//       cb(null, filename);
+//     },
+//   }),
+//   limits: { fileSize: 50 * 1024 * 1024 }, // Optional file size limit
+// });
 
 // The router will be added as a middleware and will take control of requests starting with path /record.
 const appRouter = express.Router();
@@ -79,45 +79,45 @@ appRouter.route("/register").post(async function (req, response) {
   response.json(results);
 });
 
-appRouter
-  .route("/upload")
-  .post(upload.single("image"), async function (req, res) {
-    if (req.file) {
-      const fileUrl = `https://storage.googleapis.com/${req.file.bucket}/${req.file.filename}`;
+// appRouter
+//   .route("/upload")
+//   .post(upload.single("image"), async function (req, res) {
+//     if (req.file) {
+//       const fileUrl = `https://storage.googleapis.com/${req.file.bucket}/${req.file.filename}`;
 
-      // Assuming the userId is sent in the request body or query. Modify as needed.
-      const userId = req.body.userId || req.query.userId;
-      if (!userId) {
-        return res.status(400).send("User ID is required.");
-      }
+//       // Assuming the userId is sent in the request body or query. Modify as needed.
+//       const userId = req.body.userId || req.query.userId;
+//       if (!userId) {
+//         return res.status(400).send("User ID is required.");
+//       }
 
-      let db_connect = dbo.getDb();
-      const userIdentifier = { _id: new ObjectId(userId) };
+//       let db_connect = dbo.getDb();
+//       const userIdentifier = { _id: new ObjectId(userId) };
 
-      try {
-        // Update the imageUrl field in the user_account collection
-        await db_connect
-          .collection("user_account")
-          .updateOne(userIdentifier, { $set: { imageUrl: fileUrl } });
+//       try {
+//         // Update the imageUrl field in the user_account collection
+//         await db_connect
+//           .collection("user_account")
+//           .updateOne(userIdentifier, { $set: { imageUrl: fileUrl } });
 
-        res.json({
-          message: "File uploaded and user image updated successfully",
-          fileUrl: fileUrl,
-        });
-      } catch (error) {
-        res
-          .status(500)
-          .send("Error updating user image in database: " + error.message);
-      }
-    } else {
-      res.status(400).send("No file uploaded.");
-    }
-  });
+//         res.json({
+//           message: "File uploaded and user image updated successfully",
+//           fileUrl: fileUrl,
+//         });
+//       } catch (error) {
+//         res
+//           .status(500)
+//           .send("Error updating user image in database: " + error.message);
+//       }
+//     } else {
+//       res.status(400).send("No file uploaded.");
+//     }
+//   });
 
 appRouter.route("/settings").put(async function (req, response) {
   let db_connect = dbo.getDb();
   console.log("Request body:", req.body);
-  let userId = req.body.userId;
+  let userId = req.session.userId;
   let userChange = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -128,7 +128,6 @@ appRouter.route("/settings").put(async function (req, response) {
     pronoun: req.body.pronoun,
   };
 
-  console.log(userChange);
   // Check if an image file was uploaded
   if (req.file) {
     const imagePath = req.file.path; // This is the path to the saved image file
@@ -136,22 +135,6 @@ appRouter.route("/settings").put(async function (req, response) {
   }
 
   const userIdentifier = { _id: new ObjectId(userId) }; // Using ObjectId for MongoDB
-
-  // const res = await db_connect
-  //   .collection("user_account")
-  //   .updateOne(userIdentifier, { $set: userChange }, async function (err, res) {
-  //     if (err) {
-  //       response.status(500).send("Error updating user data: " + err.message);
-  //       return();
-  //     }
-  //     console.log("Updated data");
-  //     response.json(res);
-  //   });
-
-  // const results = await db_connect
-  //   .collection("user_account")
-  //   .updateOne(userIdentifier, { $set: userChange });
-  // response.json(results);
 
   try {
     const results = await db_connect
